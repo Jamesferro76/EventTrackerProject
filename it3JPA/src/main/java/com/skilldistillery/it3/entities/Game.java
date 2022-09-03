@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -37,7 +40,13 @@ public class Game {
 	@Column(name="update_date")
 	private LocalDateTime dateUpdated;
 	
-	private String category;
+	@JsonIgnore
+	@ManyToMany(cascade= {CascadeType.ALL})
+	@JoinTable(
+	        name = "category_has_game", 
+	        joinColumns = { @JoinColumn(name = "game_id") }, 
+	        inverseJoinColumns = { @JoinColumn(name = "category_id")})
+	private List<Category> categories;
 	
 	private boolean active;
 	private boolean posted;
@@ -46,6 +55,7 @@ public class Game {
 	@OneToMany(mappedBy="game")
 	private List<Rule> rules;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
@@ -70,7 +80,7 @@ public class Game {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
@@ -79,12 +89,12 @@ public class Game {
 		this.title = title;
 	}
 	
-	public String getCategory() {
-		return category;
+	public List<Category> getCategories() {
+		return categories;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
 
 	public boolean isActive() {
@@ -147,9 +157,9 @@ public class Game {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title);
+		return Objects.hash(active, categories, createDate, dateUpdated, description, id, posted, rules, title, user);
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -159,8 +169,13 @@ public class Game {
 		if (getClass() != obj.getClass())
 			return false;
 		Game other = (Game) obj;
-		return id == other.id && Objects.equals(title, other.title);
+		return active == other.active && Objects.equals(categories, other.categories)
+				&& Objects.equals(createDate, other.createDate) && Objects.equals(dateUpdated, other.dateUpdated)
+				&& Objects.equals(description, other.description) && id == other.id && posted == other.posted
+				&& Objects.equals(rules, other.rules) && Objects.equals(title, other.title)
+				&& Objects.equals(user, other.user);
 	}
+	
 	
 	//toString------------------toString---------------------------toString-------------
 
@@ -168,6 +183,7 @@ public class Game {
 	public String toString() {
 		return "Game [id=" + id + ", title=" + title + "]";
 	}
+
 	
 	
 

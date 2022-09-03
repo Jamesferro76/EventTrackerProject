@@ -5,6 +5,7 @@
 	<provider>org.hibernate.jpa.HibernatePersistenceProvider
     </provider>
 
+		<class>com.skilldistillery.it3.entities.Category</class>
 		<class>com.skilldistillery.it3.entities.Game</class>
 		<class>com.skilldistillery.it3.entities.Rule</class>
 		<class>com.skilldistillery.it3.entities.User</class>

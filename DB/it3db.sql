@@ -47,10 +47,9 @@ CREATE TABLE IF NOT EXISTS `game` (
   `description` VARCHAR(200) NULL,
   `date_created` DATETIME NULL,
   `update_date` DATETIME NULL,
-  `category` VARCHAR(100) NULL,
   `active` TINYINT NOT NULL DEFAULT 1,
   `posted` TINYINT NOT NULL DEFAULT 0,
-  `user_id` INT NOT NULL DEFAULT 1,
+  `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_game_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_game_user1`
@@ -84,6 +83,43 @@ CREATE TABLE IF NOT EXISTS `rule` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `category`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `category` ;
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `category` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `category_UNIQUE` (`category` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `category_has_game`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `category_has_game` ;
+
+CREATE TABLE IF NOT EXISTS `category_has_game` (
+  `category_id` INT NOT NULL,
+  `game_id` INT NOT NULL,
+  PRIMARY KEY (`category_id`, `game_id`),
+  INDEX `fk_category_has_game_game1_idx` (`game_id` ASC),
+  INDEX `fk_category_has_game_category1_idx` (`category_id` ASC),
+  CONSTRAINT `fk_category_has_game_category1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `category` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_category_has_game_game1`
+    FOREIGN KEY (`game_id`)
+    REFERENCES `game` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 SET SQL_MODE = '';
 DROP USER IF EXISTS it3user@localhost;
 SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
@@ -110,7 +146,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `it3db`;
-INSERT INTO `game` (`id`, `title`, `description`, `date_created`, `update_date`, `category`, `active`, `posted`, `user_id`) VALUES (1, 'Chores', 'Everyones gotta do them', NULL, NULL, 'household', 1, 0, 1);
+INSERT INTO `game` (`id`, `title`, `description`, `date_created`, `update_date`, `active`, `posted`, `user_id`) VALUES (1, 'Chores', 'Everyones gotta do them', NULL, NULL, 1, 0, 1);
 
 COMMIT;
 
@@ -121,6 +157,26 @@ COMMIT;
 START TRANSACTION;
 USE `it3db`;
 INSERT INTO `rule` (`id`, `condition_if`, `reward_then`, `date_created`, `update_date`, `in_use`, `active`, `game_id`) VALUES (1, 'You do the dishes', 'You get a cookie', NULL, NULL, 1, 1, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `category`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `it3db`;
+INSERT INTO `category` (`id`, `category`) VALUES (1, 'household');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `category_has_game`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `it3db`;
+INSERT INTO `category_has_game` (`category_id`, `game_id`) VALUES (1, 1);
 
 COMMIT;
 

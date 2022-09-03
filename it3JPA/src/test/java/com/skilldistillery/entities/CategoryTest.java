@@ -14,14 +14,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.skilldistillery.it3.entities.Game;
+import com.skilldistillery.it3.entities.Category;
 
-class GameTest {
+class CategoryTest {
 
 	private static EntityManagerFactory emf;
 	
 	private EntityManager em;
-	private Game game;
+	private Category category;
 	
 	
 	@BeforeAll
@@ -37,36 +37,27 @@ class GameTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em=emf.createEntityManager();
-		game=em.find(Game.class, 1);
+		category=em.find(Category.class, 1);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
 		em.close();
-		game= null;
+		category= null;
 	}
 
 	@Test
-	void test_Game_Entity_mapping() {
-		assertNotNull(game);
-		assertEquals("Chores", game.getTitle());
+	void test_Category_Entity_mapping() {
+		assertNotNull(category);
+		assertEquals("household", category.getCategory());
 	}
 	
 	@Test
-	void test_Game_And_Rules_Entity_mapping() {
-		assertNotNull(game);
-		assertTrue(game.getRules().size()>0);
+	void test_Category_And_Games_Entity_mapping() {
+		assertNotNull(category);
+		assertTrue(category.getGames().size()>0);
 	}
-	@Test
-	void test_Game_And_User_Entity_mapping() {
-		assertNotNull(game);
-		assertEquals(1, game.getUser().getId());
-	}
-	@Test
-	void test_Game_And_Cateogry_Entity_mapping() {
-		assertNotNull(game);
-		assertTrue(game.getCategories().size()>0);
-	}
+	
 	
 
 }

@@ -22,7 +22,7 @@ import com.skilldistillery.it3.services.it3Service;
 
 @RestController
 @RequestMapping("api")
-public class it3Controller {
+public class it3GameController {
 
 	@Autowired
 	private it3Service its;
@@ -30,42 +30,45 @@ public class it3Controller {
 	@Autowired
 	private it3GameService itsGame;
 	
-	@GetMapping("games/{gameId}/rules")
-	public List<Rule> findByGameId(@PathVariable int gameId){
-		return itsGame.findByGameId(gameId);
+	@GetMapping("games")
+	public List<Game> index(){
+		return itsGame.index();
 	}
-	@PostMapping("games/{id}/rules")
-	public Rule createNewRule(@PathVariable int id, @RequestBody Rule rule, HttpServletRequest req, HttpServletResponse res) {
-		Rule createdRule= its.createRule(id, rule);
-		if(createdRule==null) {
+	
+	@PostMapping("user/{id}/games")
+	public Game createNewGame(@PathVariable int id, @RequestBody Game game, HttpServletRequest req, HttpServletResponse res) {
+		System.out.println("------------------------");
+		System.out.println(id);
+		Game createdGame= itsGame.createGame(id, game);
+		if(createdGame==null) {
 			res.setStatus(404);
 		}else {
 			res.setStatus(201);
 			StringBuffer url= req.getRequestURL();
-			url.append("/").append(createdRule.getId());
+			url.append("/").append(createdGame.getId());
 			res.setHeader("Location", url.toString());
 		}
-		return createdRule;
+		return createdGame;
 	}
 	
-	@PutMapping(path="games/{id}/rules/{rid}")
-	public Rule update(@PathVariable int id, @PathVariable int rid, @RequestBody Rule rule, HttpServletResponse res) {
+	@PutMapping(path="user/{id}/games/{gid}")
+	public Game update(@PathVariable int id, @PathVariable int gid, @RequestBody Game game, HttpServletResponse res) {
 		try {
-			rule=its.updateRule(id, rid, rule);
-			if(rule==null) {
+			game=itsGame.updateGame(id, gid, game);
+			if(game==null) {
 				res.setStatus(404);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(400);
-			rule=null;
+			game=null;
 		}
-		return rule;
+		return game;
 	}
 	
-	@DeleteMapping("games/{id}/rules/{cid}")
+	@DeleteMapping("user/{id}/games/{cid}")
 	public void deleteComment(@PathVariable int id, @PathVariable int cid, HttpServletResponse res) {
-		boolean deleted= its.deleteRule(id, cid);
+		boolean deleted= itsGame.deleteGame(id, cid);
 		if(deleted) {
 			res.setStatus(204);
 		}else {
@@ -75,4 +78,13 @@ public class it3Controller {
 		
 	}
 	
+	@GetMapping("user/{id}/games")
+	public List<Game> findGamesByUser(@PathVariable int id){
+		return itsGame.findByUserId(id);
+	}
+	
+//	@GetMapping("games/category/{keyword}")
+//	public List<Game> findByCategoryKeyword(@PathVariable String keyword){
+//		return itsGame.findByCategory(keyword);
+//	}
 }

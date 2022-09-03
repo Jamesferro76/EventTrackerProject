@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.skilldistillery.it3.entities.Category;
 import com.skilldistillery.it3.entities.Game;
 
 public interface it3GameRepository extends JpaRepository<Game, Integer> {
 
 
 	List<Game> findByUserId(int id);
-	List<Game> findByCategoryIgnoreCaseContaining(String keyword);
+	//List<Game> findByCategoryContaining(Category category);
+
+	Game findByIdAndUserId(int gameId, int userId);
 }

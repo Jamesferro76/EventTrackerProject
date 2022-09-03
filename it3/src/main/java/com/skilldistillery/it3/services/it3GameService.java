@@ -15,4 +15,10 @@ public interface it3GameService {
 	
 	List<Game> findByCategory(String keyword);
 
+	Game createGame(int id, Game game);
+
+	boolean deleteGame(int id, int cid);
+
+	Game updateGame(int id, int gid, Game game);
+
 }
