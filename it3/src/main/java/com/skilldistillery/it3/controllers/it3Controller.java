@@ -77,4 +77,9 @@ public class it3Controller {
 		
 	}
 	
+	@GetMapping("user/{id}/games")
+	public List<Game> findGamesByUser(@PathVariable int id){
+		return its.findByUserId(id);
+	}
+	
 }

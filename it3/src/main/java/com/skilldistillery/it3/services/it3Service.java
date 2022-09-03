@@ -16,5 +16,7 @@ public interface it3Service {
 	boolean deleteRule(int gameId, int ruleId);
 
 	Rule updateRule(int id, int rid, Rule rule);
+	
+	List<Game> findByUserId(int id);
 
 }

@@ -77,4 +77,9 @@ public class it3ServiceImpl implements it3Service {
 		return deleted;
 	}
 
+	@Override
+	public List<Game> findByUserId(int id) {
+		return repoGame.findByUserId(id);
+	}
+	
 }
