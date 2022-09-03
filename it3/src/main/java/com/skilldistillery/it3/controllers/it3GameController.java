@@ -74,8 +74,6 @@ public class it3GameController {
 		}else {
 			res.setStatus(404);
 		}
-		
-		
 	}
 	
 	@GetMapping("user/{id}/games")
@@ -83,8 +81,8 @@ public class it3GameController {
 		return itsGame.findByUserId(id);
 	}
 	
-//	@GetMapping("games/category/{keyword}")
-//	public List<Game> findByCategoryKeyword(@PathVariable String keyword){
-//		return itsGame.findByCategory(keyword);
-//	}
+	@GetMapping("games/category/{keyword}")
+	public List<Game> findByCategoryKeyword(@PathVariable String keyword){
+		return itsGame.findByCategory(keyword);
+	}
 }

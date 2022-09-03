@@ -52,7 +52,7 @@ public class it3GameServiceImpl implements it3GameService {
 	@Override
 	public List<Game> findByCategory(String keyword) {
 		Category cat=repoCat.findByCategoryIgnoreCaseContaining(keyword);
-		return null;//repoGame.findByCategoryContaining(cat);
+		return repoGame.findByCategoriesContaining(cat);
 	}
 
 	@Override
