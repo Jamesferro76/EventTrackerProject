@@ -11,4 +11,6 @@ public interface it3RuleRepository extends JpaRepository<Rule, Integer> {
 
 	List<Rule> findByGameId(int gameId);
 
+	Rule findByIdAndGameId(int ruleId, int gameId);
+
 }
