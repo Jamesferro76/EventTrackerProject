@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.it3.entities.Game;
 import com.skilldistillery.it3.entities.Rule;
+import com.skilldistillery.it3.services.it3GameService;
 import com.skilldistillery.it3.services.it3Service;
 
 @RestController
@@ -26,14 +27,17 @@ public class it3Controller {
 	@Autowired
 	private it3Service its;
 	
+	@Autowired
+	private it3GameService itsGame;
+	
 	@GetMapping("games")
 	public List<Game> index(){
-		return its.index();
+		return itsGame.index();
 	}
 	
 	@GetMapping("games/{gameId}/rules")
 	public List<Rule> findByGameId(@PathVariable int gameId){
-		return its.findByGameId(gameId);
+		return itsGame.findByGameId(gameId);
 	}
 	
 	@PostMapping("games/{id}/rules")
@@ -79,7 +83,11 @@ public class it3Controller {
 	
 	@GetMapping("user/{id}/games")
 	public List<Game> findGamesByUser(@PathVariable int id){
-		return its.findByUserId(id);
+		return itsGame.findByUserId(id);
 	}
 	
+	@GetMapping("games/category/{keyword}")
+	public List<Game> findByCategoryKeyword(@PathVariable String keyword){
+		return itsGame.findByCategory(keyword);
+	}
 }

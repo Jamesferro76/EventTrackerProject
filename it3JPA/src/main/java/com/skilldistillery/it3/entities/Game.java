@@ -37,6 +37,8 @@ public class Game {
 	@Column(name="update_date")
 	private LocalDateTime dateUpdated;
 	
+	private String category;
+	
 	private boolean active;
 	private boolean posted;
 	
@@ -77,11 +79,13 @@ public class Game {
 		this.title = title;
 	}
 	
-	
-	
-	
-	
-	//Hash/Equals---------------Hash/Equals--------------------Hash/Equals-----------------
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	public boolean isActive() {
 		return active;
@@ -139,6 +143,8 @@ public class Game {
 		this.rules = rules;
 	}
 
+	//Hash/Equals---------------Hash/Equals--------------------Hash/Equals-----------------
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, title);

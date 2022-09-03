@@ -21,22 +21,6 @@ public class it3ServiceImpl implements it3Service {
 	private it3RuleRepository repoRule;
 
 	@Override
-	public List<Game> index() {
-		return repoGame.findAll();
-	}
-
-	@Override
-	public List<Rule> findByGameId(int gameId) {
-		System.out.println(gameId);
-
-		if (!repoGame.existsById(gameId)) {
-			return null;
-		}
-		List<Rule> rules = repoRule.findByGameId(gameId);
-		return rules;
-	}
-
-	@Override
 	public Rule createRule(int id, Rule rule) {
 		Optional<Game> gameOpt = repoGame.findById(id);
 		if (gameOpt.isPresent()) {
@@ -75,11 +59,6 @@ public class it3ServiceImpl implements it3Service {
 
 		}
 		return deleted;
-	}
-
-	@Override
-	public List<Game> findByUserId(int id) {
-		return repoGame.findByUserId(id);
 	}
 	
 }
