@@ -35,7 +35,7 @@ Due to this project being a backend only assignment I am posting here some infor
 | Get       | '/api/games/user/1/games'|            |  List of games by user    | Return a list of games based on the users                                  |
 | Post      | '/api/user'            | JSON         |  Created users            | Creates a user and populates it in the database                            |
 | Post      | '/api/user/1/games'    | JSON         |  Created game             | Creates a game and populates it in the database and assigns it a user      |
-| Post      | '/api/api/games/1/rules'| JSON        |  Created rule             | Creates a rule and populates it in the database and assigns it a game      |
+| Post      | '/api/games/1/rules'   | JSON        |  Created rule             | Creates a rule and populates it in the database and assigns it a game      |
 | PUT       | '/api/user/1'          | JSON         |  Updated users            | Modifies an existing user                                                  |
 | PUT       | '/api/user/1/games/1'  | JSON         |  Updated games            | Modifies an existing game                                                  |
 | PUT       | '/api/games/1/rules/3' | JSON         |  Updated rules            | Modifies an existing rule                                                  |
