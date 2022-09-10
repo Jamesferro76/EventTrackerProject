@@ -25,6 +25,16 @@ function init(){
 		
 	});
 	
+	document.searchGame.search.addEventListener('click', function(event){
+		event.preventDefault();
+		console.log('search for game');
+		let keyword= document.searchGame.findByCategory.value;
+		
+		if(keyword.length>0){
+			searchGame(keyword);
+		}
+	})
+	
 	
 	
 
@@ -77,6 +87,29 @@ function displayGame(game){
 	dataDiv.appendChild(description);
 	
 };
+
+
+//FindByCategory-----------------------------------------------------------------FindByCategory------------------------------
+
+function searchGame(keyword){
+	let xhr=new XMLHttpRequest();
+	console.log(keyword)
+	xhr.open("GET", "api/games/category/"+keyword);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState===4){
+			if(xhr.status===200){
+				console.log(xhr.responseText);
+				displayGames(JSON.parse(xhr.responseText));
+			}
+			else{
+				console.error("Error loading games: "+ xhr.status);
+			}
+		}
+	};
+	xhr.send();
+}
+
+
 
 //CREATEGAME------------------------------------------------------------------------CREATEGAME-------------------------------
 
