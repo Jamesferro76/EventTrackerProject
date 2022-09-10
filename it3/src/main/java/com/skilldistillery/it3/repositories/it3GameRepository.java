@@ -15,4 +15,5 @@ public interface it3GameRepository extends JpaRepository<Game, Integer> {
 	List<Game> findByCategoriesContaining(Category category);
 
 	Game findByIdAndUserId(int gameId, int userId);
+	List<Game> findByTitleContaining(String keyword);
 }

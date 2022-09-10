@@ -90,4 +90,9 @@ public class it3GameController {
 	public List<Game> findByCategoryKeyword(@PathVariable String keyword){
 		return itsGame.findByCategory(keyword);
 	}
+	
+	@GetMapping("games/title/{keyword}")
+	public List<Game> findByTitleKeyword(@PathVariable String keyword){
+		return itsGame.findByTitle(keyword);
+	}
 }

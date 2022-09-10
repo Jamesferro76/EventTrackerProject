@@ -29,7 +29,7 @@ function init(){
 	document.searchGame.search.addEventListener('click', function(event){
 		event.preventDefault();
 		console.log('search for game');
-		let keyword= document.searchGame.findByCategory.value;
+		let keyword= document.searchGame.findByTitle.value;
 		
 		if(keyword.length>0){
 			searchGame(keyword);
@@ -99,12 +99,12 @@ function displayGame(game){
 };
 
 
-//FindByCategory-----------------------------------------------------------------FindByCategory------------------------------
+//FindByGameTitle-----------------------------------------------------------------FindByGameTitle------------------------------
 
 function searchGame(keyword){
 	let xhr=new XMLHttpRequest();
 	console.log(keyword)
-	xhr.open("GET", "api/games/category/"+keyword);
+	xhr.open("GET", "api/games/title/"+keyword);
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState===4){
 			if(xhr.status===200){

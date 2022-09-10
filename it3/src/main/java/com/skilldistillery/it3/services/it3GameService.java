@@ -23,4 +23,6 @@ public interface it3GameService {
 
 	Game findById(int id);
 
+	List<Game> findByTitle(String keyword);
+
 }
