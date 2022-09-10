@@ -28,6 +28,11 @@ document.createRule.create.addEventListener('click', function(event) {
 	
 });
 
+var home= document.getElementById("home");
+home.addEventListener('click', function(){
+		location.href="index.html"
+	})
+
 }
 
 function gamePage(game){
@@ -41,31 +46,29 @@ function gamePage(game){
 	let description = document.createElement('blockquote');
 	description.textContent = game.description;
 	dataDiv.appendChild(description);
-	rulesByGameId(game.id);
+	rulesByGameId(game.id, game);
 	}
 	
-function displayRules(rules){
+function displayRules(rules, game){
 	let dataDiv=document.getElementById("displayRules");
 	dataDiv.textContent= '';
-	let ul= document.createElement('ul');
-	dataDiv.appendChild(ul);
+	
 	for(let rule of rules){
-		let li= document.createElement('li');
-		li.textContent=rule.condition;
-		ul.appendChild(li);
-		let li2= document.createElement('li');
-		li2.textContent=rule.reward;
-		ul.appendChild(li2);
+		let condition= document.createElement('h4');
+		condition.textContent=rule.condition;
+		dataDiv.appendChild(condition);
+		let reward= document.createElement('blockquote');
+		reward.textContent=rule.reward;
+		dataDiv.appendChild(reward);
 		
-		//li.addEventListener('click', function(){
-		//updateSetUp(game);
-		//console.log('Update game '+game.id);
+		condition.addEventListener('click', function(){
+		updateSetUp(rule, game);
 		
-//})
+})
 	}
 }
 
-function rulesByGameId(id){
+function rulesByGameId(id, game){
 	let xhr=new XMLHttpRequest();
 	console.log(id)
 	xhr.open("GET", "api/games/"+id+"/rules");
@@ -73,7 +76,7 @@ function rulesByGameId(id){
 		if(xhr.readyState===4){
 			if(xhr.status===200){
 				console.log(xhr.responseText);
-				displayRules(JSON.parse(xhr.responseText));
+				displayRules(JSON.parse(xhr.responseText), game);
 			}
 			else{
 				console.error("Error loading games: "+ xhr.status);
@@ -84,6 +87,7 @@ function rulesByGameId(id){
 }
 
 function gameByGameId(id){
+	removeUpdateForm();
 	let xhr=new XMLHttpRequest();
 	console.log(id)
 	xhr.open("GET", "api/games/"+id);
@@ -134,3 +138,136 @@ function postRule(createdRule) {
 	console.log(createdRuleJson);
 	xhr.send(createdRuleJson);
 };
+
+
+//UpdateRule----------------------------------------------------------------------------UpdateRule--------------------------------------
+
+updateSetUp= function(rule, game){
+	let dataDiv=document.getElementById("update");
+	dataDiv.textContent= '';
+	let form= document.createElement('form');
+	dataDiv.appendChild(form);
+	
+	let hidden=document.createElement('input');
+	hidden.type="hidden";
+	hidden.value=rule.id;
+	hidden.name='ruleId';
+	form.appendChild(hidden);
+	
+	let condition= document.createElement('input');
+	condition.type="text";
+	condition.name="condition";
+	condition.value=rule.condition;
+	form.appendChild(condition);
+
+	form.appendChild(document.createElement('br'));
+	
+	let reward= document.createElement('textarea');
+	reward.row=3;
+	reward.cols=40;
+	reward.name="description";
+	reward.value=rule.reward;
+	form.appendChild(reward);
+	
+	
+	let update= document.createElement('button');
+	update.name="update";
+	update.textContent='Update';
+	form.appendChild(update);
+	
+	let del= document.createElement('button');
+	del.name="delete";
+	del.textContent='Delete';
+	form.appendChild(del);
+	
+	update.addEventListener('click', function(event){
+		event.preventDefault();
+		console.log('Updating rule');
+		let updatedRule = {
+			id: hidden.value,
+			condition: condition.value,
+			reward: reward.value,
+			inUse: true,
+			active: true,
+			game: game,
+		};
+		if (updatedRule.condition.length > 0 && updatedRule.reward.length > 0) {
+			console.log(updatedRule);
+			updateRule(updatedRule);
+		}
+		
+	});
+	
+	del.addEventListener('click', function(event){
+		event.preventDefault();
+		deleteGame(rule, game);
+		});
+}
+
+function updateRule(updatedRule) {
+	let xhr = new XMLHttpRequest();
+
+	console.log("in updatedRule" + updatedRule.id);
+	console.log("in updatedRule" + updatedRule.game.id);
+	xhr.open('PUT', 'api/games/'+updatedRule.game.id+"/rules/"+updatedRule.id);
+
+	xhr.setRequestHeader("Content-type", "application/json");
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) {
+			if (xhr.status === 200 ||xhr.status===201) {
+
+				console.log('rule updated')
+				let data = xhr.responseText;
+				console.log(data);
+				let rule = JSON.parse(data);
+				gameByGameId(updatedRule.game.id);
+
+			} else if(xhr.status===400){
+				displayError('Invalid data');
+			}
+			else {
+				console.error('Something went wrong: ' + xhr.status);
+				displayError('Rule update failed')
+			}
+		}
+	};
+
+	let updatedRuleJson = JSON.stringify(updatedRule);
+	console.log(updatedRuleJson);
+	xhr.send(updatedRuleJson);
+};
+
+
+function deleteGame(deleteRule, game) {
+	let xhr = new XMLHttpRequest();
+
+	console.log("in delete" + deleteRule.id)
+	xhr.open('DELETE', 'api/games/'+game.id+'/rules/'+deleteRule.id);
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) {
+			if (xhr.status === 200 ||xhr.status===204) {
+
+				console.log('game deleted')
+				gameByGameId(game.id);
+
+			} else if(xhr.status===400){
+				displayError('Invalid data');
+			}
+			else {
+				console.error('Something went wrong: ' + xhr.status);
+				displayError('Game unable to be deleted')
+			}
+		}
+	};
+	xhr.send();
+};
+
+function removeUpdateForm(){
+	let dataDiv=document.getElementById("update");
+	dataDiv.textContent= '';
+	while(dataDiv.lastElementChild){
+	dataDiv.removeChild(dataDiv.firstElementChild);
+	}
+}
