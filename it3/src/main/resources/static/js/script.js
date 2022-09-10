@@ -3,6 +3,7 @@ window.addEventListener('load', function(){
 	init();
 });
 
+
 function init(){
 	//TODO
 	//- Event handlers for butttons and stuff
@@ -86,6 +87,13 @@ function displayGame(game){
 	description.textContent = game.description;
 	dataDiv.appendChild(description);
 	
+	title.addEventListener('click', function(){
+		localStorage.setItem("object_name",JSON.stringify(game));;
+		
+		location.href="test.html"
+		gamePage(game);
+		
+	})
 };
 
 
@@ -275,3 +283,34 @@ function deleteGame(gameId) {
 	xhr.send();
 };
 
+//GamePage------------------------------------------------------------GamePage---------------------------------------------------
+
+function gamePage(game){
+	
+	let dataDiv=document.getElementById("gamePage");
+	dataDiv.textContent= '';
+	let title = document.createElement('h1');
+	title.textContent = game.title;
+	dataDiv.appendChild(title);
+
+	let description = document.createElement('blockquote');
+	description.textContent = game.description;
+	dataDiv.appendChild(description);
+	
+	let ul= document.createElement('ul');
+	dataDiv.appendChild(ul);
+	for(let rule of game.rules){
+		let li= document.createElement('li');
+		li.textContent=rule.condition;
+		ul.appendChild(li);
+		let li2= document.createElement('li');
+		li2.textContent=rule.reward;
+		ul.appendChild(li2);
+		
+		//li.addEventListener('click', function(){
+		//updateSetUp(game);
+		//console.log('Update game '+game.id);
+		
+//})
+	}
+}

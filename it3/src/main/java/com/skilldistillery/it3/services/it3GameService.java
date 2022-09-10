@@ -21,4 +21,6 @@ public interface it3GameService {
 
 	Game updateGame(int id, int gid, Game game);
 
+	Game findById(int id);
+
 }

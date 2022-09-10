@@ -116,5 +116,15 @@ public class it3GameServiceImpl implements it3GameService {
 		}
 		return null;
 	}
+
+	@Override
+	public Game findById(int id) {
+		Optional<Game> gameOpt= repoGame.findById(id);
+		Game game= null;
+		if (gameOpt.isPresent()) {
+			game = gameOpt.get();
+			}
+		return game;
+	}
 	
 }
