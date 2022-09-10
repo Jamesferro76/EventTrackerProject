@@ -34,15 +34,18 @@ function init(){
 		if(keyword.length>0){
 			searchGame(keyword);
 		}
-	})
+	});
 	
-	
-	
+	var home= document.getElementById("home");
+home.addEventListener('click', function(){
+		location.href="index.html"
+	});
 
 }
 
 function loadAllGames(){
 	removeUpdateForm()
+	removeEdit();
 	let xhr=new XMLHttpRequest();
 	xhr.open("GET", "api/games");
 	xhr.onreadystatechange=function(){
@@ -284,6 +287,14 @@ function deleteGame(gameId) {
 
 function removeUpdateForm(){
 	let dataDiv=document.getElementById("update");
+	dataDiv.textContent= '';
+	while(dataDiv.lastElementChild){
+	dataDiv.removeChild(dataDiv.firstElementChild);
+	}
+}
+
+function removeEdit(){
+	let dataDiv=document.getElementById("edit");
 	dataDiv.textContent= '';
 	while(dataDiv.lastElementChild){
 	dataDiv.removeChild(dataDiv.firstElementChild);
