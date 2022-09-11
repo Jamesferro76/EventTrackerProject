@@ -22,6 +22,8 @@ document.createRule.create.addEventListener('click', function(event) {
 		};
 		if (createdRule.condition.length > 0 && createdRule.reward.length > 0) {
 			console.log(createdRule);
+			document.createRule.condition.value='';
+			document.createRule.reward.value='';
 			console.log("In init about to create rule "+createdRule.game.title);
 			postRule(createdRule);
 		}

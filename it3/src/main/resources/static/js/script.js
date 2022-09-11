@@ -12,14 +12,21 @@ function init(){
 	document.createGame.create.addEventListener('click', function(event) {
 		event.preventDefault();
 		console.log('Adding game');
+		
+		var data = localStorage.getItem("userLoggedIn");
+		var profile=JSON.parse(data);
+		
 		let createdgame = {
 			title: document.createGame.title.value,
 			description: document.createGame.description.value,
 			active: true,
 			posted: true,
+			user: profile,
 			
 		};
 		if (createdgame.title.length > 0 && createdgame.description.length > 0) {
+			document.createGame.title.value='';
+			document.createGame.description.value='';
 			console.log(createdgame);
 			postGame(createdgame);
 		}
@@ -135,7 +142,8 @@ function postGame(createdGame) {
 		var profile=JSON.parse(data);
 
 	console.log("in postGame" + createdGame)
-	xhr.open('POST', 'api/user/'+ profile.id+'/games');
+	console.log("in postGame" + createdGame.user.id);
+	xhr.open('POST', 'api/user/'+ createdGame.user.id+'/games');
 
 	xhr.setRequestHeader("Content-type", "application/json");
 
@@ -147,7 +155,9 @@ function postGame(createdGame) {
 				let data = xhr.responseText;
 				console.log(data);
 				let game = JSON.parse(data);
+				game.user=profile;
 				displayGame(game);
+				clearCreateForm();
 				loadAllGames();
 
 			} else if(xhr.status===400){
@@ -173,6 +183,9 @@ updateSetUp= function(game){
 	
 	var data = localStorage.getItem("userLoggedIn");
 		var profile=JSON.parse(data);
+		console.log("Game user id"+game.user);
+		console.log("Profile id"+profile.id);
+		console.log("Profile admin"+profile.admin);
 		//A game seem to not know its user. 
 	//if(game.user.id===profile.id || profile.admin){
 	
@@ -246,7 +259,8 @@ function updatedGame(updatedGame) {
 	var data = localStorage.getItem("userLoggedIn");
 		var profile=JSON.parse(data);
 
-	console.log("in updatedGame" + updatedGame)
+	console.log("in updatedGame" + updatedGame.id);
+	//console.log("in updatedGame" + updatedGame.user.id);
 	xhr.open('PUT', 'api/user/'+ profile.id+ '/games/'+updatedGame.id);
 
 	xhr.setRequestHeader("Content-type", "application/json");
@@ -320,4 +334,8 @@ function removeEdit(){
 	while(dataDiv.lastElementChild){
 	dataDiv.removeChild(dataDiv.firstElementChild);
 	}
+}
+
+function clearCreateForm(){
+	
 }
