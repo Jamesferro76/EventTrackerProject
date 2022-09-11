@@ -6,7 +6,7 @@ window.addEventListener('load', function(){
 function init(){
 	
 	var data = localStorage.getItem("object_name");
-localStorage.clear(); //clean the localstorage
+//localStorage.clear();
 var game = JSON.parse(data);
 gamePage(game);
 

@@ -80,7 +80,6 @@ function displayGames(gameList){
 		
 		li.addEventListener('click', function(){
 		updateSetUp(game);
-		console.log('Update game '+game.id);
 		
 })
 	}
@@ -98,9 +97,9 @@ function displayGame(game){
 	dataDiv.appendChild(description);
 	
 	title.addEventListener('click', function(){
-		localStorage.setItem("object_name",JSON.stringify(game));;
+		localStorage.setItem("object_name",JSON.stringify(game));
 		
-		location.href="test.html"
+		location.href="test.html";
 	})
 };
 
@@ -131,9 +130,12 @@ function searchGame(keyword){
 
 function postGame(createdGame) {
 	let xhr = new XMLHttpRequest();
+	
+	var data = localStorage.getItem("userLoggedIn");
+		var profile=JSON.parse(data);
 
 	console.log("in postGame" + createdGame)
-	xhr.open('POST', 'api/user/1/games');
+	xhr.open('POST', 'api/user/'+ profile.id+'/games');
 
 	xhr.setRequestHeader("Content-type", "application/json");
 
@@ -167,6 +169,12 @@ function postGame(createdGame) {
 
 updateSetUp= function(game){
 	displayGame(game);
+	
+	
+	var data = localStorage.getItem("userLoggedIn");
+		var profile=JSON.parse(data);
+		//A game seem to not know its user. 
+	//if(game.user.id===profile.id || profile.admin){
 	
 	let dataDiv=document.getElementById("update");
 	dataDiv.textContent= '';
@@ -228,14 +236,18 @@ updateSetUp= function(game){
 		deleteGame(game.id);
 		
 		});
+		//}
 }
 
 
 function updatedGame(updatedGame) {
 	let xhr = new XMLHttpRequest();
+	
+	var data = localStorage.getItem("userLoggedIn");
+		var profile=JSON.parse(data);
 
 	console.log("in updatedGame" + updatedGame)
-	xhr.open('PUT', 'api/user/1/games/'+updatedGame.id);
+	xhr.open('PUT', 'api/user/'+ profile.id+ '/games/'+updatedGame.id);
 
 	xhr.setRequestHeader("Content-type", "application/json");
 
@@ -268,9 +280,12 @@ function updatedGame(updatedGame) {
 
 function deleteGame(gameId) {
 	let xhr = new XMLHttpRequest();
+	
+	var data = localStorage.getItem("userLoggedIn");
+		var profile=JSON.parse(data);
 
 	console.log("in delete" + gameId)
-	xhr.open('DELETE', 'api/user/1/games/'+gameId);
+	xhr.open('DELETE', 'api/user/'+profile.id+'/games/'+gameId);
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
