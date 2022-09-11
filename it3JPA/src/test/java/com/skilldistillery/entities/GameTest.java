@@ -61,6 +61,7 @@ class GameTest {
 	void test_Game_And_User_Entity_mapping() {
 		assertNotNull(game);
 		assertEquals(1, game.getUser().getId());
+		assertEquals("James", game.getUser().getFirstName());
 	}
 	@Test
 	void test_Game_And_Cateogry_Entity_mapping() {

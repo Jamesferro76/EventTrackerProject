@@ -12,7 +12,9 @@ The premise of this project is pretty simple. Create a full CRUD back end using 
 * Spring Data JPA
 * AWS-EC2
 * Gradle
+* HTML
 * Java
+* Javascript
 * Terminal -zsh
 
 # Lessons Learned
@@ -42,3 +44,15 @@ Due to this project being a backend only assignment I am posting here some infor
 | DEL       | '/api/user1'           |              |                           | Deletes a user and any games/rules they have made                          |
 | DEL       | '/api/user/1/games/4'  |              |                           | Deletes a game and any rules that go with it                               |
 | DEL       | '/api/games/1/rules/4' |              |                           | Deletes a rule                                                             |
+
+
+
+# Front end with Javascript
+
+This project had a second assignment to it which was to create a functional and dynamic front end using Javascript. This has been really fascinating to figure out how to have the page dynamically change and to pass information from one page to another to get all of the functionality that I want from it.
+
+My original production was fairly ambitious, and although I knew how to accomplish my goals in other methods I wasn't sure how to make it work with Javascript. This made for a rather interesting process of exploration.
+
+# Lessons learned about Javascript
+
+I learned so much this weekend! I needed to figure out the basics of running full crud operations through Javascript. Before this project I never had to update or delete through this method. Once I got that down then I needed to figure out how to go from one page to another and how to send the required data for that. Then I had to learn how I could create a functional login method which remembers if you are logged in, but I can't let you log in without allowing you to register or even log out. Every layer I added created more interesting problems that I had to figure out and learn from and that's what makes this project really exciting to me.
