@@ -63,4 +63,9 @@ public class it3UserServiceImpl implements it3UserService {
 				return user;
 			}
 
+	@Override
+	public User findByUsernameANDPassword(String username, String password) {
+		return repoUser.findByUsernameAndPassword(username, password);
+	}
+
 }

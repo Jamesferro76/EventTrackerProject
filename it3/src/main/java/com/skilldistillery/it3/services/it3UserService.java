@@ -14,4 +14,6 @@ public interface it3UserService {
 
 	List<User> findAll();
 
+	User findByUsernameANDPassword(String username, String password);
+
 }

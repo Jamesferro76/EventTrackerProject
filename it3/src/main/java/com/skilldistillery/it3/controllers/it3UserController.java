@@ -75,4 +75,16 @@ public class it3UserController {
 		}
 	}
 	
+	@GetMapping("user/{username}/{password}")
+	public User login(@PathVariable String username, @PathVariable String password, HttpServletResponse res) {
+		User user=itsUser.findByUsernameANDPassword(username, password);
+		if(user==null) {
+			res.setStatus(400);
+			
+		}else {
+			res.setStatus(200);
+		}
+		return user;
+	}
+	
 }

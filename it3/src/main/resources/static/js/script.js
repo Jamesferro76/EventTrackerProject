@@ -40,6 +40,12 @@ function init(){
 home.addEventListener('click', function(){
 		location.href="index.html"
 	});
+	
+	document.login.login.addEventListener('click', function(event){
+		event.preventDefault();
+		location.href="login.html"
+		
+	})
 
 }
 

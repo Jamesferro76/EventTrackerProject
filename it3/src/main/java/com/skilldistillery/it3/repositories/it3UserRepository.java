@@ -6,5 +6,7 @@ import com.skilldistillery.it3.entities.User;
 
 public interface it3UserRepository extends JpaRepository<User, Integer> {
 
+	User findByUsernameAndPassword(String username, String password);
+
 
 }
