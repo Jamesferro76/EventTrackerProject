@@ -24,7 +24,12 @@
 <div *ngIf="!loginAttempt">
 
 <div *ngIf="!selected">
+  <div *ngIf="user">
+    <button type="button" (click)="filterBy=!filterBy" (click)="filter()">Filter</button><br/>
+  </div>
+  <div *ngIf="filterBy">
   Show All Games: <input type="checkbox" name="showAll" [(ngModel)]="showAll"><br/>
+</div>
 <table class="table table-striped table-hover">
   <thead class="table-dark">
     <tr>
@@ -37,7 +42,7 @@
 <tr *ngFor="let game of games| posted:showAll" [ngClass]="game.posted?'completedTodo':''">
 <td (click)="displayGame(game)" >{{game.title}}</td>
 <td>{{game.posted}}
-  <!-- <input type="checkbox" name="posted" [(ngModel)]="game.posted" (change)="updateGameHome(game)"> -->
+<input *ngIf="filterBy" type="checkbox" name="posted" [(ngModel)]="game.posted" (change)="updateGameHome(game)">
 </td>
 <td><button (click)="deleteGame(game.id)" class="btn btn-danger">X</button></td>
 </tr>

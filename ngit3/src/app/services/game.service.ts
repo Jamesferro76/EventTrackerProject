@@ -37,10 +37,23 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
     );
   }
 
-  createGame(newGame: Game){
+  searchByUser(userId: number){
+    return this.http.get<Game[]>(this.baseUrl+"api/user/"+userId+"/games").pipe(
+      catchError((err: any)=>{
+        console.log(err);
+        return throwError(
+          ()=>new Error(
+            'GameService.index():error retrieving Game List: '+ err
+          )
+        );
+      })
+    );
+  }
+
+  createGame(newGame: Game, userId: number){
     newGame.posted=true;
     console.log(newGame.title);
-    return this.http.post<Game>(this.baseUrl+"api/user/1/games", newGame).pipe(
+    return this.http.post<Game>(this.baseUrl+"api/user/"+userId+"/games", newGame).pipe(
       catchError((err: any) => {
         console.error(err);
         return throwError(
@@ -51,7 +64,7 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
   }
 
 
-  updateGame(updateTodo: Game){
+  updateGame(updateTodo: Game, userId: number){
 
     // if(updateTodo.completed){
     //   updateTodo.completeDate=this.datePipe.transform(Date.now(), 'shortDate');
@@ -59,7 +72,7 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
     //   updateTodo.completeDate='';
     // }
 
-    return this.http.put<Game>(this.baseUrl+"api/user/1/games/"+updateTodo.id, updateTodo).pipe(
+    return this.http.put<Game>(this.baseUrl+"api/user/"+userId+"/games/"+updateTodo.id, updateTodo).pipe(
       catchError((err: any) => {
         console.error(err);
         return throwError(
@@ -70,9 +83,9 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
 
   }
 
-  destroy(id: number){
+  destroy(id: number, userId:number){
 
-    return this.http.delete<Game>(this.baseUrl+"api/user/1/games/"+id).pipe(
+    return this.http.delete<Game>(this.baseUrl+"api/user/"+userId+"/games/"+id).pipe(
       catchError((err: any) => {
         console.error(err);
         return throwError(

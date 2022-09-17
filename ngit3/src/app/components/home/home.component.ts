@@ -35,6 +35,8 @@ export class HomeComponent implements OnInit {
   register: boolean=false;
   newUser: User= new User();
 
+  filterBy:boolean=false;
+
   constructor(private userService:UserService, private gameService:GameService, private ruleService:RuleService, private inUsePipe: InUsePipe) { }
 
   ngOnInit(): void {
@@ -62,7 +64,7 @@ export class HomeComponent implements OnInit {
   }
 
   displayTable(){
-    this.loadGames();
+    this.filter();
     this.selected=null;
     this.editGame=null;
     this.editRule=null;
@@ -73,7 +75,7 @@ export class HomeComponent implements OnInit {
     this.editGame=null;
     this.editRule=null;
     if(this.search===""){
-      this.loadGames();
+      this.filter();
     }else{
     this.gameService.searchByTitle(this.search).subscribe(
       {
@@ -92,12 +94,13 @@ export class HomeComponent implements OnInit {
   }
 
   addGame(){
-    this.gameService.createGame(this.newGame).subscribe(
+    if(this.user){
+    this.gameService.createGame(this.newGame, this.user.id).subscribe(
       {
       next: (data)=>{
         this.newGame=data
         this.newGame= new Game;
-        this.loadGames();
+        this.filter();
       },
       error:(err)=>{
         console.error('TodoListComponent.reload(): error Loading todos: ');
@@ -106,7 +109,7 @@ export class HomeComponent implements OnInit {
       }
       }
     );
-
+    }
   }
 
   setEditGame(){
@@ -120,12 +123,13 @@ export class HomeComponent implements OnInit {
     if(this.editGame!=null){
       updateGame.id=this.editGame.id;
     }
-    this.gameService.updateGame(updateGame).subscribe(
+    if(this.user){
+    this.gameService.updateGame(updateGame, this.user.id).subscribe(
       {
       next: (result)=>{
         this.selected=result;
         this.editGame=null;
-        this.loadGames();
+        this.filter();
       },
       error:(err)=>{
         console.error('TodoListComponent.UpdateTodo(): error Updating todos: ');
@@ -134,17 +138,19 @@ export class HomeComponent implements OnInit {
       }
       }
     );
+    }
   }
   updateGameHome(updateGame: Game){
     if(this.editGame!=null){
       updateGame.id=this.editGame.id;
     }
-    this.gameService.updateGame(updateGame).subscribe(
+    if(this.user){
+    this.gameService.updateGame(updateGame, this.user.id).subscribe(
       {
       next: (result)=>{
         this.selected=null;
         this.editGame=null;
-        this.loadGames();
+        this.filter();
       },
       error:(err)=>{
         console.error('TodoListComponent.UpdateTodo(): error Updating todos: ');
@@ -154,12 +160,14 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+}
 
   deleteGame(id:number){
-    this.gameService.destroy(id).subscribe(
+    if(this.user){
+    this.gameService.destroy(id, this.user.id).subscribe(
       {
       next: ()=>{
-        this.loadGames();
+        this.filter();
       },
       error:(err)=>{
         console.error('TodoListComponent.delete(): error Deleting todos: ');
@@ -168,6 +176,7 @@ export class HomeComponent implements OnInit {
       }
       }
     );
+  }
   }
 
   loadRules(){
@@ -286,6 +295,33 @@ registerUser(){
     }
   );
 
+}
+
+filter(){
+  if(this.filterBy){
+    this.searchByUser();
+
+  }else{
+    this.showAll=false;
+    this.loadGames();
+  }
+}
+
+searchByUser(){
+  if(this.user){
+  this.gameService.searchByUser(this.user.id).subscribe(
+    {
+    next: (data)=>{
+      this.games=data;
+    },
+    error:(err)=>{
+      console.error('TodoListComponent.reload(): error Loading todos: ');
+      console.error(err);
+
+    }
+    }
+  )
+  }
 }
 
 }
