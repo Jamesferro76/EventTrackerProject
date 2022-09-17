@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 import { Game } from 'src/app/model/game';
 import { Rule } from 'src/app/model/rule';
+import { User } from 'src/app/model/user';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,6 @@ import { Rule } from 'src/app/model/rule';
 })
 export class HomeComponent implements OnInit {
 
-  login:boolean=false;
   games: Game[]=[];
   newGame: Game= new Game();
   selected: Game | null=null;
@@ -27,7 +28,12 @@ export class HomeComponent implements OnInit {
   showComplete:boolean=false;
   showAll:boolean=false;
 
-  constructor(private gameService:GameService, private ruleService:RuleService, private inUsePipe: InUsePipe) { }
+  loginAttempt:boolean=false;
+  user: User|null=null;
+  username: string='';
+  password: string='';
+
+  constructor(private userService:UserService, private gameService:GameService, private ruleService:RuleService, private inUsePipe: InUsePipe) { }
 
   ngOnInit(): void {
     this.loadGames();
@@ -241,6 +247,21 @@ deleteRule(gameId:number, ruleId:number){
     }
     }
   );
+}
+
+login(){
+  this.userService.login(this.username, this.password).subscribe(
+    {
+    next: (data)=>{
+      this.user=data
+      this.loginAttempt=false;
+    },
+    error:(err)=>{
+      console.error('TodoListComponent.reload(): error Loading todos: ');
+      console.error(err);
+    }
+    }
+  )
 }
 
 }

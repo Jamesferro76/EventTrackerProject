@@ -6,9 +6,10 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <a class="navbar-brand" [routerLink]="['/home']" (click)="displayTable()">Home</a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link login">Login</a>
+        <li class="nav-item" *ngIf="!user">
+          <a class="nav-link login" (click)="loginAttempt=!loginAttempt">Login</a>
         </li>
+        <li class="nav-item" *ngIf="user">{{user.firstName}} {{user.lastName}}</li>
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="text" name="search" [(ngModel)]="search" placeholder="Search" aria-label="Search">
@@ -20,8 +21,8 @@
 
 
 <h1>If This Then That</h1>
+<div *ngIf="!loginAttempt">
 
-<div *ngIf="login">login=true</div>
 <div *ngIf="!selected">
   Show All Games: <input type="checkbox" name="showAll" [(ngModel)]="showAll"><br/>
 <table class="table table-striped table-hover">
@@ -99,4 +100,13 @@
     <button type="button" (click)="cancelEditRule()">Cancel</button><br/>
   <button type="button" (click)="updateRule(editRule)">Save</button>
   </form>
+</div>
+</div>
+<div *ngIf="loginAttempt">
+  <h3>Login:</h3>
+  <form action="editRule">
+    Username: <input type="text" name="username" [(ngModel)]="username"><br/>
+    Password: <input type="text" name="password" [(ngModel)]="password"><br/>
+   <button type="button" (click)="login()">login</button>
+</form>
 </div>
