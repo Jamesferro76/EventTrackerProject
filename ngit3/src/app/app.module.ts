@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { InUsePipe } from './pipes/in-use.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NavigationComponent
+    NavigationComponent,
+    InUsePipe
   ],
   imports: [
     BrowserModule,
@@ -20,7 +22,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [InUsePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

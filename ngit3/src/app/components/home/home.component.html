@@ -1,3 +1,24 @@
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand" [routerLink]="['/home']" (click)="displayTable()">Home</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link login">Login</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="text" name="search" [(ngModel)]="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit" (click)="searchByTitle()">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
 <h1>If This Then That</h1>
 
 <div *ngIf="login">login=true</div>
@@ -7,7 +28,7 @@
     <tr>
     <th>Title</th>
     <th>Rules</th>
-    <th></th>
+    <th>Delete</th>
   </tr>
   </thead>
 <tbody>
@@ -19,6 +40,7 @@
 </tbody>
 </table>
 
+<h3>Create game:</h3>
 <form action="createGame">
   Title: <input type="text" name="title" [(ngModel)]="newGame.title"><br/>
   Description: <input type="text" name="description" [(ngModel)]="newGame.description"><br/>
@@ -28,33 +50,38 @@
 </div>
 
 <div *ngIf="selected&&!editGame&&!editRule">
-  <h1>{{selected.id}}</h1>
   <h1>{{selected.title}}</h1>
+  <h1>{{selected.id}}</h1>
   <p>{{selected.description}}</p>
   <p>Posted: {{selected.posted}}</p>
-  <p>rules? {{selected.rules}}</p>
-  <div *ngFor="let rule of rules">
+  <button type="button" (click)="displayTable()" class="btn btn-danger btn-sm">Back</button>
+  <button type="button" (click)="setEditGame()"class="btn btn-outline-success btn-sm">Edit</button><br/>
+  <hr>
+  Show All Rules: <input type="checkbox" name="showCompleted" [(ngModel)]="showComplete"><br/>
+  <div *ngFor="let rule of rules | inUse:showComplete" [ngClass]="rule.inUse?'completedTodo':''">
     <hr>
     <p>Condition:{{rule.condition}}</p>
     <p>Reward:{{rule.reward}}</p>
+    <p>In use:{{rule.inUse}}
+    <input type="checkbox" name="inUse" [(ngModel)]="rule.inUse" (change)="updateRule(rule)"></p><br/>
     <button type="button" (click)="setEditRule(rule)"class="btn btn-outline-success btn-sm">Edit</button>
     <button (click)="deleteRule(selected.id, rule.id)" class="btn btn-danger">X</button>
   </div>
-  <button type="button" (click)="displayTable()" class="btn btn-danger btn-sm">Back</button>
-  <button type="button" (click)="setEditGame()"class="btn btn-outline-success btn-sm">Edit</button>
+  <hr>
 </div>
 
 <div *ngIf="editGame">
   <form action="editGame">
-    <input type="text" name="title" [(ngModel)]="editGame.title"><br/>
-    <input type="text" name="description" [(ngModel)]="editGame.description"><br/>
-    <input type="checkbox" name="posted" [(ngModel)]="editGame.posted"><br/>
+   Title: <input type="text" name="title" [(ngModel)]="editGame.title"><br/>
+   Description:  <input type="text" name="description" [(ngModel)]="editGame.description"><br/>
+   Posted: <input type="checkbox" name="posted" [(ngModel)]="editGame.posted"><br/>
     <button type="button" (click)="cancelEdit()">Cancel</button><br/>
   <button type="button" (click)="updateGame(editGame)">Save</button>
   </form>
 </div>
 
-<div *ngIf="selected&&!editGame">
+<div *ngIf="selected&&!editRule">
+  <H3>Create Rule</H3>
   <form action="createRule">
     Condition: <input type="text" name="condition" [(ngModel)]="newRule.condition"><br/>
     Reward: <input type="text" name="reward" [(ngModel)]="newRule.reward"><br/>
@@ -64,9 +91,9 @@
 
 <div *ngIf="editRule">
   <form action="editRule">
-    <input type="text" name="condition" [(ngModel)]="editRule.condition"><br/>
-    <input type="text" name="reward" [(ngModel)]="editRule.reward"><br/>
-    <input type="checkbox" name="inUse" [(ngModel)]="editRule.inUse"><br/>
+   Condition: <input type="text" name="condition" [(ngModel)]="editRule.condition"><br/>
+   Reward: <input type="text" name="reward" [(ngModel)]="editRule.reward"><br/>
+   Use? <input type="checkbox" name="inUse" [(ngModel)]="editRule.inUse"><br/>
     <button type="button" (click)="cancelEditRule()">Cancel</button><br/>
   <button type="button" (click)="updateRule(editRule)">Save</button>
   </form>

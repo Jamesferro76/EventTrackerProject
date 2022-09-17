@@ -1,3 +1,4 @@
+import { InUsePipe } from './../../pipes/in-use.pipe';
 import { RuleService } from './../../services/rule.service';
 import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
@@ -16,13 +17,16 @@ export class HomeComponent implements OnInit {
   newGame: Game= new Game();
   selected: Game | null=null;
   editGame: Game|null=null;
+  search: string='';
 
   newRule: Rule=new Rule();
   rules: Rule[]=[];
   // selectedRule: Rule | null=null;
   editRule: Rule|null=null;
 
-  constructor(private gameService:GameService, private ruleService:RuleService) { }
+  showComplete:boolean=false;
+
+  constructor(private gameService:GameService, private ruleService:RuleService, private inUsePipe: InUsePipe) { }
 
   ngOnInit(): void {
     this.loadGames();
@@ -49,7 +53,33 @@ export class HomeComponent implements OnInit {
   }
 
   displayTable(){
+    this.loadGames();
     this.selected=null;
+    this.editGame=null;
+    this.editRule=null;
+  }
+
+  searchByTitle(){
+    this.selected=null;
+    this.editGame=null;
+    this.editRule=null;
+    if(this.search===""){
+      this.loadGames();
+    }else{
+    this.gameService.searchByTitle(this.search).subscribe(
+      {
+      next: (data)=>{
+        this.games=data;
+        this.search="";
+      },
+      error:(err)=>{
+        console.error('TodoListComponent.reload(): error Loading todos: ');
+        console.error(err);
+
+      }
+      }
+    )
+    }
   }
 
   addGame(){

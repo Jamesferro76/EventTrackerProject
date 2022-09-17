@@ -24,6 +24,19 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
     );
   }
 
+  searchByTitle(search: string){
+    return this.http.get<Game[]>(this.url+"/title/"+search).pipe(
+      catchError((err: any)=>{
+        console.log(err);
+        return throwError(
+          ()=>new Error(
+            'GameService.index():error retrieving Game List: '+ err
+          )
+        );
+      })
+    );
+  }
+
   createGame(newGame: Game){
     newGame.posted=true;
     console.log(newGame.title);
