@@ -1,5 +1,6 @@
 <h1>If This Then That</h1>
 
+<div *ngIf="login">login=true</div>
 <div *ngIf="!selected">
 <table class="table table-striped table-hover">
   <thead class="table-dark">
@@ -11,7 +12,7 @@
   </thead>
 <tbody>
 <tr *ngFor="let game of games">
-<td (click)="displayTodo(game)" >{{game.title}}</td>
+<td (click)="displayGame(game)" >{{game.title}}</td>
 <td>{{game.rules?.length}}</td>
 <td><button (click)="deleteGame(game.id)" class="btn btn-danger">X</button></td>
 </tr>
@@ -26,16 +27,18 @@
 
 </div>
 
-<div *ngIf="selected&&!editGame">
+<div *ngIf="selected&&!editGame&&!editRule">
   <h1>{{selected.id}}</h1>
   <h1>{{selected.title}}</h1>
   <p>{{selected.description}}</p>
   <p>Posted: {{selected.posted}}</p>
-  <div *ngFor="let rule of selected.rules">
+  <p>rules? {{selected.rules}}</p>
+  <div *ngFor="let rule of rules">
     <hr>
     <p>Condition:{{rule.condition}}</p>
     <p>Reward:{{rule.reward}}</p>
-
+    <button type="button" (click)="setEditRule(rule)"class="btn btn-outline-success btn-sm">Edit</button>
+    <button (click)="deleteRule(selected.id, rule.id)" class="btn btn-danger">X</button>
   </div>
   <button type="button" (click)="displayTable()" class="btn btn-danger btn-sm">Back</button>
   <button type="button" (click)="setEditGame()"class="btn btn-outline-success btn-sm">Edit</button>
@@ -48,5 +51,23 @@
     <input type="checkbox" name="posted" [(ngModel)]="editGame.posted"><br/>
     <button type="button" (click)="cancelEdit()">Cancel</button><br/>
   <button type="button" (click)="updateGame(editGame)">Save</button>
+  </form>
+</div>
+
+<div *ngIf="selected&&!editGame">
+  <form action="createRule">
+    Condition: <input type="text" name="condition" [(ngModel)]="newRule.condition"><br/>
+    Reward: <input type="text" name="reward" [(ngModel)]="newRule.reward"><br/>
+    <button (click)="addRule()">Add Rule</button>
+    </form>
+</div>
+
+<div *ngIf="editRule">
+  <form action="editRule">
+    <input type="text" name="condition" [(ngModel)]="editRule.condition"><br/>
+    <input type="text" name="reward" [(ngModel)]="editRule.reward"><br/>
+    <input type="checkbox" name="inUse" [(ngModel)]="editRule.inUse"><br/>
+    <button type="button" (click)="cancelEditRule()">Cancel</button><br/>
+  <button type="button" (click)="updateRule(editRule)">Save</button>
   </form>
 </div>

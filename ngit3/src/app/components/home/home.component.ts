@@ -2,6 +2,7 @@ import { RuleService } from './../../services/rule.service';
 import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 import { Game } from 'src/app/model/game';
+import { Rule } from 'src/app/model/rule';
 
 @Component({
   selector: 'app-home',
@@ -10,10 +11,16 @@ import { Game } from 'src/app/model/game';
 })
 export class HomeComponent implements OnInit {
 
+  login:boolean=false;
   games: Game[]=[];
   newGame: Game= new Game();
   selected: Game | null=null;
   editGame: Game|null=null;
+
+  newRule: Rule=new Rule();
+  rules: Rule[]=[];
+  // selectedRule: Rule | null=null;
+  editRule: Rule|null=null;
 
   constructor(private gameService:GameService, private ruleService:RuleService) { }
 
@@ -36,8 +43,9 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  displayTodo(game: Game){
+  displayGame(game: Game){
     this.selected=game;
+    this.loadRules();
   }
 
   displayTable(){
@@ -103,5 +111,86 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+
+  loadRules(){
+    if(this.selected){
+    this.ruleService.index(this.selected.id).subscribe(
+      {
+      next: (data)=>{
+        this.rules=data
+      },
+      error:(err)=>{
+        console.error('TodoListComponent.reload(): error Loading todos: ');
+        console.error(err);
+
+      }
+      }
+    )
+  }
+}
+
+  addRule(){
+    if(this.selected){
+    this.ruleService.createRule(this.newRule, this.selected.id).subscribe(
+      {
+      next: (data)=>{
+        this.newRule=data
+        this.newRule= new Rule();
+        this.loadRules();
+      },
+      error:(err)=>{
+        console.error('TodoListComponent.reload(): error Loading todos: ');
+        console.error(err);
+
+      }
+      }
+    );
+
+  }
+}
+
+setEditRule(ruleToEdit: Rule){
+  this.editRule=Object.assign({}, ruleToEdit);
+}
+cancelEditRule(){
+  this.editRule=null;
+}
+
+updateRule(updateRule: Rule){
+  if(this.editRule!=null){
+    updateRule.id=this.editRule.id;
+  }
+  if(this.selected){
+  this.ruleService.updateRule(updateRule, this.selected.id).subscribe(
+    {
+    next: (result)=>{
+      this.editRule=result;
+      this.editRule=null;
+      this.loadRules();
+    },
+    error:(err)=>{
+      console.error('HomeComponent.UpdateRule(): error Updating rules: ');
+      console.error(err);
+
+    }
+    }
+  );
+  }
+}
+
+deleteRule(gameId:number, ruleId:number){
+  this.ruleService.destroy(gameId, ruleId).subscribe(
+    {
+    next: ()=>{
+      this.loadRules();
+    },
+    error:(err)=>{
+      console.error('HomeComponent.delete(): error Deleting rules: ');
+      console.error(err);
+
+    }
+    }
+  );
+}
 
 }
