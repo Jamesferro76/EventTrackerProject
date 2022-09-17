@@ -24,11 +24,12 @@
 <div *ngIf="!loginAttempt">
 
 <div *ngIf="!selected">
-  <div *ngIf="user">
-    <button type="button" (click)="filterBy=!filterBy" (click)="filter()">Filter</button><br/>
+  <div *ngIf="user&&!filterBy">
+    <button type="button" (click)="handleFilterClick()" class="btn btn-danger">Show my games</button><br/>
   </div>
   <div *ngIf="filterBy">
-  Show All Games: <input type="checkbox" name="showAll" [(ngModel)]="showAll"><br/>
+    <button type="button" (click)="handleFilterClick()" class="btn btn-success">Show All Posted Games</button><br/>
+  Show all unposted games: <input type="checkbox" name="showAll" [(ngModel)]="showAll"><br/>
 </div>
 <table class="table table-striped table-hover">
   <thead class="table-dark">

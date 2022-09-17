@@ -324,4 +324,9 @@ searchByUser(){
   }
 }
 
+handleFilterClick(){
+  this.filterBy=!this.filterBy;
+  this.filter();
+}
+
 }
