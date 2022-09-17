@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   editRule: Rule|null=null;
 
   showComplete:boolean=false;
+  showAll:boolean=false;
 
   constructor(private gameService:GameService, private ruleService:RuleService, private inUsePipe: InUsePipe) { }
 
@@ -115,6 +116,25 @@ export class HomeComponent implements OnInit {
       {
       next: (result)=>{
         this.selected=result;
+        this.editGame=null;
+        this.loadGames();
+      },
+      error:(err)=>{
+        console.error('TodoListComponent.UpdateTodo(): error Updating todos: ');
+        console.error(err);
+
+      }
+      }
+    );
+  }
+  updateGameHome(updateGame: Game){
+    if(this.editGame!=null){
+      updateGame.id=this.editGame.id;
+    }
+    this.gameService.updateGame(updateGame).subscribe(
+      {
+      next: (result)=>{
+        this.selected=null;
         this.editGame=null;
         this.loadGames();
       },

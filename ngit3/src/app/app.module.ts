@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { InUsePipe } from './pipes/in-use.pipe';
+import { PostedPipe } from './pipes/posted.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavigationComponent,
-    InUsePipe
+    InUsePipe,
+    PostedPipe
   ],
   imports: [
     BrowserModule,

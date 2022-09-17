@@ -23,18 +23,20 @@
 
 <div *ngIf="login">login=true</div>
 <div *ngIf="!selected">
+  Show All Games: <input type="checkbox" name="showAll" [(ngModel)]="showAll"><br/>
 <table class="table table-striped table-hover">
   <thead class="table-dark">
     <tr>
     <th>Title</th>
-    <th>Rules</th>
+    <th>Posted</th>
     <th>Delete</th>
   </tr>
   </thead>
 <tbody>
-<tr *ngFor="let game of games">
+<tr *ngFor="let game of games| posted:showAll" [ngClass]="game.posted?'completedTodo':''">
 <td (click)="displayGame(game)" >{{game.title}}</td>
-<td>{{game.rules?.length}}</td>
+<td>{{game.posted}}<input type="checkbox" name="posted" [(ngModel)]="game.posted" (change)="updateGameHome(game)">
+</td>
 <td><button (click)="deleteGame(game.id)" class="btn btn-danger">X</button></td>
 </tr>
 </tbody>
