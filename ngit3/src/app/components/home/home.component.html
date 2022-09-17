@@ -36,20 +36,22 @@
 <tbody>
 <tr *ngFor="let game of games| posted:showAll" [ngClass]="game.posted?'completedTodo':''">
 <td (click)="displayGame(game)" >{{game.title}}</td>
-<td>{{game.posted}}<input type="checkbox" name="posted" [(ngModel)]="game.posted" (change)="updateGameHome(game)">
+<td>{{game.posted}}
+  <!-- <input type="checkbox" name="posted" [(ngModel)]="game.posted" (change)="updateGameHome(game)"> -->
 </td>
 <td><button (click)="deleteGame(game.id)" class="btn btn-danger">X</button></td>
 </tr>
 </tbody>
 </table>
 
+<div *ngIf="user">
 <h3>Create game:</h3>
 <form action="createGame">
   Title: <input type="text" name="title" [(ngModel)]="newGame.title"><br/>
   Description: <input type="text" name="description" [(ngModel)]="newGame.description"><br/>
   <button (click)="addGame()">Add Game</button>
   </form>
-
+</div>
 </div>
 
 <div *ngIf="selected&&!editGame&&!editRule">
@@ -102,11 +104,25 @@
   </form>
 </div>
 </div>
-<div *ngIf="loginAttempt">
+<div *ngIf="loginAttempt&&!register">
   <h3>Login:</h3>
   <form action="editRule">
     Username: <input type="text" name="username" [(ngModel)]="username"><br/>
     Password: <input type="text" name="password" [(ngModel)]="password"><br/>
    <button type="button" (click)="login()">login</button>
 </form>
+<button type="button" (click)="loginAttempt=!loginAttempt">Cancel</button><br/>
+<hr>
+    <div (click)="register=!register">register?</div>
+</div>
+<div *ngIf="register">
+  <form action="editRule">
+    First Name: <input type="text" name="username" [(ngModel)]="newUser.firstName"><br/>
+    Last Name: <input type="text" name="username" [(ngModel)]="newUser.lastName"><br/>
+    Username: <input type="text" name="username" [(ngModel)]="newUser.username"><br/>
+    Password: <input type="text" name="password" [(ngModel)]="newUser.password"><br/>
+    Email: <input type="text" name="password" [(ngModel)]="newUser.email"><br/>
+   <button type="button" (click)="registerUser()">Register</button>
+  </form>
+  <button type="button" (click)="register=!register">Cancel</button><br/>
 </div>

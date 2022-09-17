@@ -32,6 +32,8 @@ export class HomeComponent implements OnInit {
   user: User|null=null;
   username: string='';
   password: string='';
+  register: boolean=false;
+  newUser: User= new User();
 
   constructor(private userService:UserService, private gameService:GameService, private ruleService:RuleService, private inUsePipe: InUsePipe) { }
 
@@ -262,6 +264,28 @@ login(){
     }
     }
   )
+}
+
+registerUser(){
+  this.userService.registerUser(this.newUser).subscribe(
+    {
+    next: (data)=>{
+      this.newUser=data
+      this.username=this.newUser.username;
+      this.password=this.newUser.password;
+      this.newUser= new User();
+      this.loginAttempt=false;
+      this.register=false;
+      this.login();
+    },
+    error:(err)=>{
+      console.error('TodoListComponent.reload(): error Loading todos: ');
+      console.error(err);
+
+    }
+    }
+  );
+
 }
 
 }

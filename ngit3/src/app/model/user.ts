@@ -5,7 +5,7 @@ export class User {
   id:number;
   firstName:string;
   lastName:string;
-  userName:string;
+  username:string;
   password:string;
   email:string;
   active:boolean;
@@ -13,13 +13,13 @@ export class User {
   games?: Game[];
 
   constructor(
-    id:number=0, firstName:string='', lastName:string='', userName:string='', password:string='',
+    id:number=0, firstName:string='', lastName:string='', username:string='', password:string='',
   email:string='', active:boolean=true, admin:boolean=false, games: Game[]=[]
   ){
     this.id=id;
     this.firstName=firstName;
     this.lastName=lastName;
-    this.userName=userName;
+    this.username=username;
     this.password=password;
     this.email=email;
     this.active=active;

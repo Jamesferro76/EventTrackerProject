@@ -8,12 +8,12 @@ import { User } from '../model/user';
 })
 export class UserService {
   private baseUrl = 'http://localhost:8082/'; // adjust port to match server
-  private url = this.baseUrl + 'api/user/'; // change 'todos' to your API path
+  private url = this.baseUrl + 'api/user'; // change 'todos' to your API path
 
     constructor(private http: HttpClient) { }
 
   login(username: string, password: string){
-    return this.http.get<User>(this.url+username+"/"+password).pipe(
+    return this.http.get<User>(this.url+"/"+username+"/"+password).pipe(
       catchError((err: any)=>{
         console.log(err);
         return throwError(
@@ -24,4 +24,19 @@ export class UserService {
       })
     );
   }
+
+  registerUser(newUser: User){
+    newUser.active=true;
+    newUser.admin=false;
+    console.log(newUser.firstName);
+    return this.http.post<User>(this.url, newUser).pipe(
+      catchError((err: any) => {
+        console.error(err);
+        return throwError(
+           () => new Error( 'TodoService.create(): error creating Todo: ' + err )
+        );
+      })
+    );
+  }
+
 }
