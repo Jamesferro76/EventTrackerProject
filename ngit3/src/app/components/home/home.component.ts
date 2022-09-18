@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
   newUser: User= new User();
 
   filterBy:boolean=false;
+  authen: boolean=false;
 
   constructor(private userService:UserService, private gameService:GameService, private ruleService:RuleService, private inUsePipe: InUsePipe) { }
 
@@ -60,6 +61,7 @@ export class HomeComponent implements OnInit {
 
   displayGame(game: Game){
     this.selected=game;
+    this.authentication()
     this.loadRules();
   }
 
@@ -266,6 +268,7 @@ login(){
     next: (data)=>{
       this.user=data
       this.loginAttempt=false;
+      this.displayTable();
     },
     error:(err)=>{
       console.error('TodoListComponent.reload(): error Loading todos: ');
@@ -324,9 +327,38 @@ searchByUser(){
   }
 }
 
-handleFilterClick(){
-  this.filterBy=!this.filterBy;
+showMyGames(){
+  this.filterBy=true;
   this.filter();
 }
+showAllGames(){
+  this.filterBy=false;
+  this.filter();
+}
+
+authentication(){
+  if(this.user){
+    if(this.selected){
+  this.gameService.authentication(this.user.id, this.selected.id).subscribe(
+    {
+    next: (data)=>{
+      this.authen=data;
+    },
+    error:(err)=>{
+      console.error('TodoListComponent.reload(): error Loading todos: ');
+      console.error(err);
+
+    }
+    }
+  )
+  }
+}
+}
+
+logout(){
+  this.user=null;
+  this.showAllGames();
+}
+
 
 }

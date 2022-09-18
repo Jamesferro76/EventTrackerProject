@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-light">
+<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -9,7 +9,10 @@
         <li class="nav-item" *ngIf="!user">
           <a class="nav-link login" (click)="loginAttempt=!loginAttempt">Login</a>
         </li>
-        <li class="nav-item" *ngIf="user">{{user.firstName}} {{user.lastName}}</li>
+        <li class="nav-item" *ngIf="user" class="nav-link username" (click)="showMyGames()">{{user.firstName}} {{user.lastName}}</li>
+        <li class="nav-item" *ngIf="user">
+          <a class="nav-link logout" (click)="logout()">Logout</a>
+        </li>
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="text" name="search" [(ngModel)]="search" placeholder="Search" aria-label="Search">
@@ -25,10 +28,10 @@
 
 <div *ngIf="!selected">
   <div *ngIf="user&&!filterBy">
-    <button type="button" (click)="handleFilterClick()" class="btn btn-danger">Show my games</button><br/>
+    <button type="button" (click)="showMyGames()" class="btn btn-danger">Show my games</button><br/>
   </div>
   <div *ngIf="filterBy">
-    <button type="button" (click)="handleFilterClick()" class="btn btn-success">Show All Posted Games</button><br/>
+    <button type="button" (click)="showAllGames()" class="btn btn-success">Show All Posted Games</button><br/>
   Show all unposted games: <input type="checkbox" name="showAll" [(ngModel)]="showAll"><br/>
 </div>
 <table class="table table-striped table-hover">
@@ -65,8 +68,10 @@
   <h1>{{selected.id}}</h1>
   <p>{{selected.description}}</p>
   <p>Posted: {{selected.posted}}</p>
+  <div *ngIf="authen">
   <button type="button" (click)="displayTable()" class="btn btn-danger btn-sm">Back</button>
   <button type="button" (click)="setEditGame()"class="btn btn-outline-success btn-sm">Edit</button><br/>
+  </div>
   <hr>
   Show All Rules: <input type="checkbox" name="showCompleted" [(ngModel)]="showComplete"><br/>
   <div *ngFor="let rule of rules | inUse:showComplete" [ngClass]="rule.inUse?'completedTodo':''">
@@ -74,9 +79,11 @@
     <p>Condition:{{rule.condition}}</p>
     <p>Reward:{{rule.reward}}</p>
     <p>In use:{{rule.inUse}}
-    <input type="checkbox" name="inUse" [(ngModel)]="rule.inUse" (change)="updateRule(rule)"></p><br/>
+      <input type="checkbox" name="inUse" [(ngModel)]="rule.inUse" (change)="updateRule(rule)"></p><br/>
+      <div *ngIf="authen">
     <button type="button" (click)="setEditRule(rule)"class="btn btn-outline-success btn-sm">Edit</button>
     <button (click)="deleteRule(selected.id, rule.id)" class="btn btn-danger">X</button>
+  </div>
   </div>
   <hr>
 </div>
@@ -91,7 +98,7 @@
   </form>
 </div>
 
-<div *ngIf="selected&&!editRule">
+<div *ngIf="selected&&!editRule&&!editGame&&authen">
   <H3>Create Rule</H3>
   <form action="createRule">
     Condition: <input type="text" name="condition" [(ngModel)]="newRule.condition"><br/>
@@ -112,7 +119,7 @@
 </div>
 <div *ngIf="loginAttempt&&!register">
   <h3>Login:</h3>
-  <form action="editRule">
+  <form action="login">
     Username: <input type="text" name="username" [(ngModel)]="username"><br/>
     Password: <input type="text" name="password" [(ngModel)]="password"><br/>
    <button type="button" (click)="login()">login</button>
@@ -122,7 +129,7 @@
     <div (click)="register=!register">register?</div>
 </div>
 <div *ngIf="register">
-  <form action="editRule">
+  <form action="register">
     First Name: <input type="text" name="username" [(ngModel)]="newUser.firstName"><br/>
     Last Name: <input type="text" name="username" [(ngModel)]="newUser.lastName"><br/>
     Username: <input type="text" name="username" [(ngModel)]="newUser.username"><br/>

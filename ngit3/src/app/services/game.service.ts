@@ -50,6 +50,19 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
     );
   }
 
+  authentication(userId: number, gameId:number){
+    return this.http.get<boolean>(this.baseUrl+"api/user/"+userId+"/games/"+gameId).pipe(
+      catchError((err: any)=>{
+        console.log(err);
+        return throwError(
+          ()=>new Error(
+            'GameService.index():error retrieving Game List: '+ err
+          )
+        );
+      })
+    );
+  }
+
   createGame(newGame: Game, userId: number){
     newGame.posted=true;
     console.log(newGame.title);

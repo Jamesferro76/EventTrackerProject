@@ -87,6 +87,16 @@ public class it3GameController {
 		return itsGame.findById(id);
 	}
 	
+	@GetMapping("user/{uid}/games/{id}")
+	public boolean findGamesByIdAndUser(@PathVariable int uid, @PathVariable int id){
+		Game game= itsGame.findById(id);
+		if(game.getUser().getId()==uid) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	@GetMapping("games/category/{keyword}")
 	public List<Game> findByCategoryKeyword(@PathVariable String keyword){
 		return itsGame.findByCategory(keyword);
