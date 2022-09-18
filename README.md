@@ -16,6 +16,8 @@ The premise of this project is pretty simple. Create a full CRUD back end using 
 * Java
 * Javascript
 * Terminal -zsh
+* Angular
+* Typescript
 
 # Lessons Learned
 During this project I was able to get more hands on experience with many different techniques:
@@ -56,3 +58,7 @@ My original production was fairly ambitious, and although I knew how to accompli
 # Lessons learned about Javascript
 
 I learned so much this weekend! I needed to figure out the basics of running full crud operations through Javascript. Before this project I never had to update or delete through this method. Once I got that down then I needed to figure out how to go from one page to another and how to send the required data for that. Then I had to learn how I could create a functional login method which remembers if you are logged in, but I can't let you log in without allowing you to register or even log out. Every layer I added created more interesting problems that I had to figure out and learn from and that's what makes this project really exciting to me.
+
+# Lessons learned about Angular
+
+This has been a fun project to work on! I was able to get a ton of hands on with Angular and really develop a smooth functional site. There were many roadblocks that I hit last week that I was able to work around with Angular this week. The most exciting function I was able to implement was a login procedure. Getting the site to register when a user is logged in or not and dynamically change based on who is logged in or if anyone is logged in at all was a fun challenge. I would like to dive into how to pass information from one page to the next to help make my process a bit smoother and keep my code a bit neater. My Home component was getting a bit crowded by the end and I would love to have been able to separate the Login logic on a different page to keep everything tidy. I am also excited that I was able to utilize a pipe in the way of allowing users to have private posts that they can see and work on without posting it. The idea to be able to keep games private as you work on them was an important feature that I wanted to have functional.
