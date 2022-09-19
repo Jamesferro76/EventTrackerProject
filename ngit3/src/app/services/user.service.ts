@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
@@ -7,8 +8,8 @@ import { User } from '../model/user';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'http://localhost:8082/'; // adjust port to match server
-  private url = this.baseUrl + 'api/user'; // change 'todos' to your API path
+  //private baseUrl = 'http://localhost:8082/'; // adjust port to match server
+  private url = environment.baseUrl + 'api/user'; // change 'todos' to your API path
 
     constructor(private http: HttpClient) { }
 

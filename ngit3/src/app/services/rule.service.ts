@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Rule } from '../model/rule';
@@ -8,12 +9,12 @@ import { catchError, throwError } from 'rxjs';
 })
 export class RuleService {
   private baseUrl = 'http://localhost:8082/'; // adjust port to match server
-private url = this.baseUrl + 'api/todos'; // change 'todos' to your API path
+private url = environment.baseUrl; // change 'todos' to your API path
 
   constructor(private http: HttpClient) { }
 
     index(gameId: number){
-      return this.http.get<Rule[]>(this.baseUrl+"api/games/"+gameId+"/rules").pipe(
+      return this.http.get<Rule[]>(this.url+"api/games/"+gameId+"/rules").pipe(
         catchError((err: any)=>{
           console.log(err);
           return throwError(
@@ -28,7 +29,7 @@ private url = this.baseUrl + 'api/todos'; // change 'todos' to your API path
     createRule(newRule: Rule, gameId: number){
       newRule.inUse=true;
       console.log(newRule.condition);
-      return this.http.post<Rule>(this.baseUrl+"api/games/"+gameId+"/rules", newRule).pipe(
+      return this.http.post<Rule>(this.url+"api/games/"+gameId+"/rules", newRule).pipe(
         catchError((err: any) => {
           console.error(err);
           return throwError(
@@ -47,7 +48,7 @@ private url = this.baseUrl + 'api/todos'; // change 'todos' to your API path
       //   updateTodo.completeDate='';
       // }
 
-      return this.http.put<Rule>(this.baseUrl+"api/games/"+gameId+"/rules/"+updateRule.id, updateRule).pipe(
+      return this.http.put<Rule>(this.url+"api/games/"+gameId+"/rules/"+updateRule.id, updateRule).pipe(
         catchError((err: any) => {
           console.error(err);
           return throwError(
@@ -60,7 +61,7 @@ private url = this.baseUrl + 'api/todos'; // change 'todos' to your API path
 
     destroy(gameId: number, ruleId: number){
 
-      return this.http.delete<Rule>(this.baseUrl+"api/games/"+gameId+"/rules/"+ruleId).pipe(
+      return this.http.delete<Rule>(this.url+"api/games/"+gameId+"/rules/"+ruleId).pipe(
         catchError((err: any) => {
           console.error(err);
           return throwError(

@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
@@ -7,8 +8,9 @@ import { Game } from '../model/game';
   providedIn: 'root'
 })
 export class GameService {
-  private baseUrl = 'http://localhost:8082/'; // adjust port to match server
-private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
+  //private baseUrl = 'http://localhost:8082/'; // adjust port to match server
+  private bUrl=environment.baseUrl;
+private url = environment.baseUrl + 'api/games'; // change 'todos' to your API path
   constructor(private http: HttpClient) { }
 
   index(){
@@ -38,7 +40,7 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
   }
 
   searchByUser(userId: number){
-    return this.http.get<Game[]>(this.baseUrl+"api/user/"+userId+"/games").pipe(
+    return this.http.get<Game[]>(this.bUrl+"api/user/"+userId+"/games").pipe(
       catchError((err: any)=>{
         console.log(err);
         return throwError(
@@ -51,7 +53,7 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
   }
 
   authentication(userId: number, gameId:number){
-    return this.http.get<boolean>(this.baseUrl+"api/user/"+userId+"/games/"+gameId).pipe(
+    return this.http.get<boolean>(this.bUrl+"api/user/"+userId+"/games/"+gameId).pipe(
       catchError((err: any)=>{
         console.log(err);
         return throwError(
@@ -66,7 +68,7 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
   createGame(newGame: Game, userId: number){
     newGame.posted=true;
     console.log(newGame.title);
-    return this.http.post<Game>(this.baseUrl+"api/user/"+userId+"/games", newGame).pipe(
+    return this.http.post<Game>(this.bUrl+"api/user/"+userId+"/games", newGame).pipe(
       catchError((err: any) => {
         console.error(err);
         return throwError(
@@ -85,7 +87,7 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
     //   updateTodo.completeDate='';
     // }
 
-    return this.http.put<Game>(this.baseUrl+"api/user/"+userId+"/games/"+updateTodo.id, updateTodo).pipe(
+    return this.http.put<Game>(this.bUrl+"api/user/"+userId+"/games/"+updateTodo.id, updateTodo).pipe(
       catchError((err: any) => {
         console.error(err);
         return throwError(
@@ -98,7 +100,7 @@ private url = this.baseUrl + 'api/games'; // change 'todos' to your API path
 
   destroy(id: number, userId:number){
 
-    return this.http.delete<Game>(this.baseUrl+"api/user/"+userId+"/games/"+id).pipe(
+    return this.http.delete<Game>(this.bUrl+"api/user/"+userId+"/games/"+id).pipe(
       catchError((err: any) => {
         console.error(err);
         return throwError(
