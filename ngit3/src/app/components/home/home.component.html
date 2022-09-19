@@ -24,6 +24,7 @@
 
 
 <h1>If This Then That</h1>
+<hr>
 <div *ngIf="!loginAttempt">
 
 <div *ngIf="!selected">
@@ -32,9 +33,11 @@
   </div>
   <div *ngIf="filterBy">
     <button type="button" (click)="showAllGames()" class="btn btn-success">Show All Posted Games</button><br/>
+  </div>
+  <div *ngIf="filterBy||user?.admin">
   Show all unposted games: <input type="checkbox" name="showAll" [(ngModel)]="showAll"><br/>
 </div>
-<table class="table table-striped table-hover">
+  <table class="table table-striped table-hover">
   <thead class="table-dark">
     <tr>
     <th>Title</th>
@@ -57,7 +60,8 @@
 <h3>Create game:</h3>
 <form action="createGame">
   Title: <input type="text" name="title" [(ngModel)]="newGame.title"><br/>
-  Description: <input type="text" name="description" [(ngModel)]="newGame.description"><br/>
+  Description:<textarea name="description" id="" cols="30" rows="4" [(ngModel)]="newGame.description"></textarea>
+  <!-- Description: <input type="text" name="description" [(ngModel)]="newGame.description"><br/> -->
   <button (click)="addGame()">Add Game</button>
   </form>
 </div>
@@ -65,7 +69,7 @@
 
 <div *ngIf="selected&&!editGame&&!editRule">
   <h1>{{selected.title}}</h1>
-  <h1>{{selected.id}}</h1>
+  <!-- <h1>{{selected.id}}</h1> -->
   <p>{{selected.description}}</p>
   <p>Posted: {{selected.posted}}</p>
   <div *ngIf="authen">
@@ -91,7 +95,8 @@
 <div *ngIf="editGame">
   <form action="editGame">
    Title: <input type="text" name="title" [(ngModel)]="editGame.title"><br/>
-   Description:  <input type="text" name="description" [(ngModel)]="editGame.description"><br/>
+   <!-- Description:  <input type="text" name="description" [(ngModel)]="editGame.description"><br/> -->
+   Description:<textarea name="description" id="" cols="30" rows="4" [(ngModel)]="editGame.description"></textarea>
    Posted: <input type="checkbox" name="posted" [(ngModel)]="editGame.posted"><br/>
     <button type="button" (click)="cancelEdit()">Cancel</button><br/>
   <button type="button" (click)="updateGame(editGame)">Save</button>
@@ -101,16 +106,26 @@
 <div *ngIf="selected&&!editRule&&!editGame&&authen">
   <H3>Create Rule</H3>
   <form action="createRule">
-    Condition: <input type="text" name="condition" [(ngModel)]="newRule.condition"><br/>
-    Reward: <input type="text" name="reward" [(ngModel)]="newRule.reward"><br/>
+    <!-- Condition: <input type="text" name="condition" [(ngModel)]="newRule.condition"><br/> -->
+    Condition:<br/>
+    <textarea name="condition" id="" cols="30" rows="4" [(ngModel)]="newRule.condition"></textarea><br/>
+    <!-- Reward: <input type="text" name="reward" [(ngModel)]="newRule.reward"><br/> -->
+    <br/>
+    Reward:<br/>
+    <textarea name="reward" id="" cols="30" rows="4" [(ngModel)]="newRule.reward"></textarea>
     <button (click)="addRule()">Add Rule</button>
     </form>
 </div>
 
 <div *ngIf="editRule">
   <form action="editRule">
-   Condition: <input type="text" name="condition" [(ngModel)]="editRule.condition"><br/>
-   Reward: <input type="text" name="reward" [(ngModel)]="editRule.reward"><br/>
+   <!-- Condition: <input type="text" name="condition" [(ngModel)]="editRule.condition"><br/> -->
+   Condition:<br/>
+   <textarea name="condition" id="" cols="30" rows="4" [(ngModel)]="editRule.condition"></textarea><br/>
+   <br/>
+   Reward:<br>
+   <textarea name="reward" id="" cols="30" rows="4" [(ngModel)]="editRule.reward"></textarea>
+   <!-- Reward: <input type="text" name="reward" [(ngModel)]="editRule.reward"><br/> -->
    Use? <input type="checkbox" name="inUse" [(ngModel)]="editRule.inUse"><br/>
     <button type="button" (click)="cancelEditRule()">Cancel</button><br/>
   <button type="button" (click)="updateRule(editRule)">Save</button>

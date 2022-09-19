@@ -357,7 +357,9 @@ authentication(){
 
 logout(){
   this.user=null;
-  this.showAllGames();
+  this.showAll=false;
+  this.authen=false;
+  this.displayTable();
 }
 
 
