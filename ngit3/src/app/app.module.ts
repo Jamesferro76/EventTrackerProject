@@ -9,6 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { InUsePipe } from './pipes/in-use.pipe';
 import { PostedPipe } from './pipes/posted.pipe';
+import { PersonalSiteComponent } from './components/personal-site/personal-site.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PostedPipe } from './pipes/posted.pipe';
     HomeComponent,
     NavigationComponent,
     InUsePipe,
-    PostedPipe
+    PostedPipe,
+    PersonalSiteComponent
   ],
   imports: [
     BrowserModule,
